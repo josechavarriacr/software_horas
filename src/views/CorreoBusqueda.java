@@ -51,8 +51,8 @@ public class CorreoBusqueda extends javax.swing.JDialog {
 
         }
         String sql = "select\n"
-                + "`estudiantes`.`nombre`,\n"
                 + "`correos`.`idCorreo`,\n"
+                + "`estudiantes`.`nombre`,\n"
                 + "`correos`.`numAyuda`,\n"
                 + "`correos`.`correo`,\n"
                 + "`correos`.`estado`,\n"
@@ -183,21 +183,21 @@ public class CorreoBusqueda extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(244, 244, 244)
-                            .addComponent(jLabel50))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(25, 25, 25)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(546, 546, 546)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(306, 306, 306)
+                        .addComponent(jLabel50)))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,7 +227,7 @@ public class CorreoBusqueda extends javax.swing.JDialog {
     private void jTableCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCorreoMouseClicked
         int row = jTableCorreo.rowAtPoint(evt.getPoint());
 
-        String idCorreo = (jTableCorreo.getValueAt(row, 1).toString());
+        String idCorreo = (jTableCorreo.getValueAt(row, 0).toString());
         Correos.txtIdCorreo.setText(idCorreo);
         
         String numAyuda =(jTableCorreo.getValueAt(row, 2).toString());
