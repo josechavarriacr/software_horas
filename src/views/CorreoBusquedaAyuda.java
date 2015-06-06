@@ -29,6 +29,90 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
         cargarEstudiantes();
     }
 
+    private void buscarCedula() {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.println("Error con el driver");
+        }
+
+        try {
+            System.out.println("Estableciendo conexion con el String");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/horas", "root", "");
+            System.out.println("Conectado a la bd");
+
+        } catch (SQLException ex) {
+            System.out.println("Error con la cadena String de conexión");
+
+        }
+        String sql = "select\n"
+                + "`ayudas`.`idAyuda` AS 'Cod ayuda',\n"
+                + "`estudiantes`.`nombre` AS 'Nombre',\n"
+                + "`estudiantes`.`cedula` AS 'Cédula',\n"
+                + "`ayudas`.`estado` AS 'Estado ayuda',\n"
+                + "`estudiantes`.`correo` AS 'Correo'\n"
+                + "from `estudiantes` INNER JOIN `ayudas`\n"
+                + "on\n"
+                + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`\n"
+                + "where `ayudas`.`estado`!='Pendiente' and `estudiantes`.`cedula` like ?";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtCedula.getText() + "%");
+            rs = pst.executeQuery();
+            jTableCorreo.setModel(DbUtils.resultSetToTableModel(rs));
+            System.out.println("like");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void buscarNombre() {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.println("Error con el driver");
+        }
+
+        try {
+            System.out.println("Estableciendo conexion con el String");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/horas", "root", "");
+            System.out.println("Conectado a la bd");
+
+        } catch (SQLException ex) {
+            System.out.println("Error con la cadena String de conexión");
+
+        }
+        String sql = "select\n"
+                + "`ayudas`.`idAyuda` AS 'Cod ayuda',\n"
+                + "`estudiantes`.`nombre` AS 'Nombre',\n"
+                + "`estudiantes`.`cedula` AS 'Cédula',\n"
+                + "`ayudas`.`estado` AS 'Estado ayuda',\n"
+                + "`estudiantes`.`correo` AS 'Correo'\n"
+                + "from `estudiantes` INNER JOIN `ayudas`\n"
+                + "on\n"
+                + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`\n"
+                + "where `ayudas`.`estado`!='Pendiente' and `estudiantes`.`nombre` like ?";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtNombre.getText() + "%");
+            rs = pst.executeQuery();
+            jTableCorreo.setModel(DbUtils.resultSetToTableModel(rs));
+            System.out.println("like");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
     public void cargarEstudiantes() {
         Connection conn = null;
         ResultSet rs = null;
@@ -58,8 +142,9 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
                 + "`ayudas`.`estado` AS 'Estado ayuda',\n"
                 + "`estudiantes`.`correo` AS 'Correo'\n"
                 + "from `estudiantes` INNER JOIN `ayudas`\n"
-                + "on \n"
-                + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`";
+                + "on\n"
+                + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`\n"
+                + "where `ayudas`.`estado`!='Pendiente'";
         try {
             pst = conn.prepareStatement(consulta);
             rs = pst.executeQuery();
@@ -102,29 +187,39 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
         jLabel50.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel50.setText("Buscar Estudiante");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Estudiante"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos Estudiante", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Nombre");
 
+        txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
             }
         });
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNombreKeyTyped(evt);
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Cédula");
 
+        txtCedula.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCedulaActionPerformed(evt);
             }
         });
         txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCedulaKeyTyped(evt);
             }
@@ -157,6 +252,7 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
+        jTableCorreo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTableCorreo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -175,6 +271,7 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTableCorreo);
 
+        btnSalir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +340,7 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
 
         String numero = (jTableCorreo.getValueAt(row, 0).toString());
         Correos.txtNumAyuda.setText(numero);
-        
+
         String estado = (jTableCorreo.getValueAt(row, 3).toString());
         Correos.txtEstado.setSelectedItem(estado);
 
@@ -274,6 +371,14 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Solo numeros aceptados!");
         }
     }//GEN-LAST:event_txtCedulaKeyTyped
+
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        buscarNombre();
+    }//GEN-LAST:event_txtNombreKeyReleased
+
+    private void txtCedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyReleased
+        buscarCedula();
+    }//GEN-LAST:event_txtCedulaKeyReleased
 
     /**
      * @param args the command line arguments

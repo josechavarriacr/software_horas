@@ -29,6 +29,96 @@ public class AyudasBusqueda extends javax.swing.JDialog {
         cargarAyudas();
     }
 
+    void buscarNombre() {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.println("Error con el driver");
+        }
+
+        try {
+            System.out.println("Estableciendo conexion con el String");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/horas", "root", "");
+            System.out.println("Conectado a la bd");
+
+        } catch (SQLException ex) {
+            System.out.println("Error con la cadena String de conexión");
+
+        }
+        String sql = "select\n"
+                + "`ayudas`.`idAyuda` AS ID,\n"
+                + "`ayudas`.`idEstudiante` AS Cédula,\n"
+                + "`estudiantes`.`nombre` AS Nombre,\n"
+                + "`ayudas`.`estado` AS Estado,\n"
+                + "`ayudas`.`fecha` AS Fecha\n"
+                + "from `ayudas`\n"
+                + "INNER JOIN\n"
+                + "`estudiantes`\n"
+                + "on\n"
+                + "`ayudas`.`idEstudiante`=`estudiantes`.`cedula`\n"
+                + "where `estudiantes`.`nombre` like ?\n"
+                + "ORDER BY `ayudas`.`estado`";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtNombre.getText() + "%");
+            rs = pst.executeQuery();
+            jTableAyudas.setModel(DbUtils.resultSetToTableModel(rs));
+            System.out.println("like");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    void buscarCedula() {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.println("Error con el driver");
+        }
+
+        try {
+            System.out.println("Estableciendo conexion con el String");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/horas", "root", "");
+            System.out.println("Conectado a la bd");
+
+        } catch (SQLException ex) {
+            System.out.println("Error con la cadena String de conexión");
+
+        }
+        String sql = "select\n"
+                + "`ayudas`.`idAyuda` AS ID,\n"
+                + "`ayudas`.`idEstudiante` AS Cédula,\n"
+                + "`estudiantes`.`nombre` AS Nombre,\n"
+                + "`ayudas`.`estado` AS Estado,\n"
+                + "`ayudas`.`fecha` AS Fecha\n"
+                + "from `ayudas`\n"
+                + "INNER JOIN\n"
+                + "`estudiantes`\n"
+                + "on\n"
+                + "`ayudas`.`idEstudiante`=`estudiantes`.`cedula`\n"
+                + "where `ayudas`.`idEstudiante` like ?\n"
+                + "ORDER BY `ayudas`.`estado`";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtCedula.getText() + "%");
+            rs = pst.executeQuery();
+            jTableAyudas.setModel(DbUtils.resultSetToTableModel(rs));
+            System.out.println("like");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
     public void cargarAyudas() {
         Connection conn = null;
         ResultSet rs = null;
@@ -98,10 +188,12 @@ public class AyudasBusqueda extends javax.swing.JDialog {
         jLabel50.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel50.setText("Buscar Ayuda");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Ayuda"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos Ayuda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        jLabel1.setText("Nombre");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Cédula");
 
+        txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
@@ -116,8 +208,10 @@ public class AyudasBusqueda extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("Cédula");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("Nombre");
 
+        txtCedula.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCedulaActionPerformed(evt);
@@ -140,11 +234,11 @@ public class AyudasBusqueda extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -152,13 +246,14 @@ public class AyudasBusqueda extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
+        jTableAyudas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTableAyudas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -181,6 +276,7 @@ public class AyudasBusqueda extends javax.swing.JDialog {
             jTableAyudas.getColumnModel().getColumn(4).setHeaderValue("Title 5");
         }
 
+        btnSalir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,22 +363,22 @@ public class AyudasBusqueda extends javax.swing.JDialog {
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
-        char c = evt.getKeyChar();
+        /*char c = evt.getKeyChar();
         boolean space = evt.getKeyCode() == KeyEvent.VK_BACK_SPACE;
         boolean backSpace = evt.getKeyCode() == KeyEvent.VK_SPACE;
         if (Character.isLetter(c) || space || backSpace) {
             getToolkit().beep();
             evt.consume();
             JOptionPane.showMessageDialog(null, "Solo numeros aceptados!");
-        }
+        }*/
     }//GEN-LAST:event_txtCedulaKeyTyped
 
     private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
-        // TODO add your handling code here:
+        buscarNombre();
     }//GEN-LAST:event_txtNombreKeyReleased
 
     private void txtCedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyReleased
-        // TODO add your handling code here:
+        buscarCedula();
     }//GEN-LAST:event_txtCedulaKeyReleased
 
     /**
