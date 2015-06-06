@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
-
 /**
  *
  * @author Rafal
@@ -28,6 +27,86 @@ public class AyudasBusquedaEstudiante extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         cargarEstudiantes();
+    }
+
+    void buscarNombre() {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.println("Error con el driver");
+        }
+
+        try {
+            System.out.println("Estableciendo conexion con el String");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/horas", "root", "");
+            System.out.println("Conectado a la bd");
+
+        } catch (SQLException ex) {
+            System.out.println("Error con la cadena String de conexión");
+
+        }
+        String sql = "select \n"
+                + "`estudiantes`.`cedula` AS Cédula,\n"
+                + "`estudiantes`.`nombre` AS Nombre,\n"
+                + "`estudiantes`.`telefono` AS Teléfono,\n"
+                + "`estudiantes`.`correo` AS Correo,\n"
+                + "`estudiantes`.`fecha` AS Fecha\n"
+                + "from `estudiantes` \n"
+                + "where `estudiantes`.`nombre` like ?";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtNombre.getText() + "%");
+            rs = pst.executeQuery();
+            jTableEstudiantes.setModel(DbUtils.resultSetToTableModel(rs));
+            System.out.println("like");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    void buscarCedula() {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.println("Error con el driver");
+        }
+
+        try {
+            System.out.println("Estableciendo conexion con el String");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/horas", "root", "");
+            System.out.println("Conectado a la bd");
+
+        } catch (SQLException ex) {
+            System.out.println("Error con la cadena String de conexión");
+
+        }
+        String sql = "select \n"
+                + "`estudiantes`.`cedula` AS Cédula,\n"
+                + "`estudiantes`.`nombre` AS Nombre,\n"
+                + "`estudiantes`.`telefono` AS Teléfono,\n"
+                + "`estudiantes`.`correo` AS Correo,\n"
+                + "`estudiantes`.`fecha` AS Fecha\n"
+                + "from `estudiantes` \n"
+                + "where `estudiantes`.`cedula` like ?";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtCedula.getText() + "%");
+            rs = pst.executeQuery();
+            jTableEstudiantes.setModel(DbUtils.resultSetToTableModel(rs));
+            System.out.println("like");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     public void cargarEstudiantes() {
@@ -112,6 +191,9 @@ public class AyudasBusquedaEstudiante extends javax.swing.JDialog {
             }
         });
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNombreKeyTyped(evt);
             }
@@ -127,6 +209,9 @@ public class AyudasBusquedaEstudiante extends javax.swing.JDialog {
             }
         });
         txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCedulaKeyTyped(evt);
             }
@@ -241,12 +326,12 @@ public class AyudasBusquedaEstudiante extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     private void jTableEstudiantesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEstudiantesMouseClicked
-         int row = jTableEstudiantes.rowAtPoint(evt.getPoint());
-      
+        int row = jTableEstudiantes.rowAtPoint(evt.getPoint());
+
         String idEstudiante = (jTableEstudiantes.getValueAt(row, 0).toString());
         Ayudas.txtIdEstudiante.setText(idEstudiante);
-       
-        this.setVisible(false);      
+
+        this.setVisible(false);
     }//GEN-LAST:event_jTableEstudiantesMouseClicked
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
@@ -261,15 +346,23 @@ public class AyudasBusquedaEstudiante extends javax.swing.JDialog {
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
-/*        char c = evt.getKeyChar();
-        boolean space = evt.getKeyCode() == KeyEvent.VK_BACK_SPACE;
-        boolean backSpace = evt.getKeyCode() == KeyEvent.VK_SPACE;
-        if (Character.isLetter(c) || space || backSpace) {
-            getToolkit().beep();
-            evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo numeros aceptados!");
-        }*/
+        /*        char c = evt.getKeyChar();
+         boolean space = evt.getKeyCode() == KeyEvent.VK_BACK_SPACE;
+         boolean backSpace = evt.getKeyCode() == KeyEvent.VK_SPACE;
+         if (Character.isLetter(c) || space || backSpace) {
+         getToolkit().beep();
+         evt.consume();
+         JOptionPane.showMessageDialog(null, "Solo numeros aceptados!");
+         }*/
     }//GEN-LAST:event_txtCedulaKeyTyped
+
+    private void txtCedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyReleased
+        buscarCedula();
+    }//GEN-LAST:event_txtCedulaKeyReleased
+
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        buscarNombre();
+    }//GEN-LAST:event_txtNombreKeyReleased
 
     /**
      * @param args the command line arguments

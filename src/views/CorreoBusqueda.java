@@ -75,7 +75,7 @@ public class CorreoBusqueda extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Eror en la consulta");
         }
     }
-    void BuscarCedula() {
+    void buscarCedula() {
         Connection conn = null;
         ResultSet rs = null;
         PreparedStatement pst = null;
@@ -113,6 +113,53 @@ public class CorreoBusqueda extends javax.swing.JDialog {
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txtCedula.getText()+"%");
+            rs = pst.executeQuery();
+            jTableCorreo.setModel(DbUtils.resultSetToTableModel(rs));
+            System.out.println("like");
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+     void buscarNombre() {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.println("Error con el driver");
+        }
+
+        try {
+            System.out.println("Estableciendo conexion con el String");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/horas", "root", "");
+            System.out.println("Conectado a la bd");
+
+        } catch (SQLException ex) {
+            System.out.println("Error con la cadena String de conexión");
+
+        }
+        String sql = "SELECT\n"
+                + "`correos`.`idCorreo`,\n"
+                + "`estudiantes`.`nombre`,\n"
+                + "`estudiantes`.`cedula`,\n"
+                + "`correos`.`numAyuda`,\n"
+                + "`correos`.`correo`,\n"
+                + "`correos`.`estado`,\n"
+                + "`correos`.`fecha`\n"
+                + "from `estudiantes`\n"
+                + "INNER JOIN `ayudas`\n"
+                + "on\n"
+                + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`\n"
+                + "INNER JOIN `correos`\n"
+                + "on `ayudas`.`idAyuda`=`correos`.`numAyuda` where `estudiantes`.`nombre` like ?";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtNombre.getText()+"%");
             rs = pst.executeQuery();
             jTableCorreo.setModel(DbUtils.resultSetToTableModel(rs));
             System.out.println("like");
@@ -319,22 +366,22 @@ public class CorreoBusqueda extends javax.swing.JDialog {
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
-        char c = evt.getKeyChar();
+/*        char c = evt.getKeyChar();
         boolean space = evt.getKeyCode() == KeyEvent.VK_BACK_SPACE;
         boolean backSpace = evt.getKeyCode() == KeyEvent.VK_SPACE;
         if (Character.isLetter(c) || space || backSpace) {
             getToolkit().beep();
             evt.consume();
             JOptionPane.showMessageDialog(null, "Solo numeros aceptados!");
-        }
+        }*/
     }//GEN-LAST:event_txtCedulaKeyTyped
 
     private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
-       
+       buscarNombre();
     }//GEN-LAST:event_txtNombreKeyReleased
 
     private void txtCedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyReleased
-       BuscarCedula();
+       buscarCedula();
     }//GEN-LAST:event_txtCedulaKeyReleased
 
     /**

@@ -51,7 +51,7 @@ public class AyudasBusqueda extends javax.swing.JDialog {
 
         }
         String sql = "select\n"
-                + "`ayudas`.`idAyuda` AS ID,\n"
+                + "`ayudas`.`idAyuda` AS Código,\n"
                 + "`ayudas`.`idEstudiante` AS Cédula,\n"
                 + "`estudiantes`.`nombre` AS Nombre,\n"
                 + "`ayudas`.`estado` AS Estado,\n"
@@ -96,7 +96,7 @@ public class AyudasBusqueda extends javax.swing.JDialog {
 
         }
         String sql = "select\n"
-                + "`ayudas`.`idAyuda` AS ID,\n"
+                + "`ayudas`.`idAyuda` AS 'Código',\n"
                 + "`ayudas`.`idEstudiante` AS Cédula,\n"
                 + "`estudiantes`.`nombre` AS Nombre,\n"
                 + "`ayudas`.`estado` AS Estado,\n"
@@ -141,7 +141,7 @@ public class AyudasBusqueda extends javax.swing.JDialog {
 
         }
         String sql = "select \n"
-                + "`ayudas`.`idAyuda` AS ID,\n"
+                + "`ayudas`.`idAyuda` AS 'Código',\n"
                 + "`ayudas`.`idEstudiante` AS Cédula,\n"
                 + "`estudiantes`.`nombre` AS Nombre,\n"
                 + "`ayudas`.`estado` AS Estado,\n"
