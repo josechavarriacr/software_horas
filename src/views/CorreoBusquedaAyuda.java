@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
-
 /**
  *
  * @author Rafal
@@ -53,9 +52,11 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
         }
         String consulta;
         consulta = "select\n"
+                + "`ayudas`.`idAyuda` AS 'Cod ayuda',\n"
                 + "`estudiantes`.`nombre` AS 'Nombre',\n"
                 + "`estudiantes`.`cedula` AS 'Cédula',\n"
-                + "`ayudas`.`estado` AS 'Estado ayuda'\n"
+                + "`ayudas`.`estado` AS 'Estado ayuda',\n"
+                + "`estudiantes`.`correo` AS 'Correo'\n"
                 + "from `estudiantes` INNER JOIN `ayudas`\n"
                 + "on \n"
                 + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`";
@@ -138,10 +139,10 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -158,13 +159,13 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
 
         jTableCorreo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
         jTableCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -173,9 +174,6 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(jTableCorreo);
-        if (jTableCorreo.getColumnModel().getColumnCount() > 0) {
-            jTableCorreo.getColumnModel().getColumn(3).setHeaderValue("Title 4");
-        }
 
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -188,21 +186,24 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(244, 244, 244)
-                            .addComponent(jLabel50))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(25, 25, 25)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(546, 546, 546)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(28, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(103, 103, 103))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel50)
+                        .addGap(267, 267, 267))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,16 +239,16 @@ public class CorreoBusquedaAyuda extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     private void jTableCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCorreoMouseClicked
-         int row = jTableCorreo.rowAtPoint(evt.getPoint());
+        int row = jTableCorreo.rowAtPoint(evt.getPoint());
 
-        String numero = (jTableCorreo.getValueAt(row, 2).toString());
+        String numero = (jTableCorreo.getValueAt(row, 0).toString());
         Correos.txtNumAyuda.setText(numero);
         
-        String correo =(jTableCorreo.getValueAt(row, 3).toString());
-        Correos.txtCorreo.setText(correo);
-        
-        String estado =(jTableCorreo.getValueAt(row, 4).toString());
+        String estado = (jTableCorreo.getValueAt(row, 3).toString());
         Correos.txtEstado.setSelectedItem(estado);
+
+        String correo = (jTableCorreo.getValueAt(row, 4).toString());
+        Correos.txtCorreo.setText(correo);
 
         this.setVisible(false);
     }//GEN-LAST:event_jTableCorreoMouseClicked

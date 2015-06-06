@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import service.correoServicio;
 import objetos.Correo;
 import static views.Ayudas.txtIdAyuda;
@@ -448,19 +449,30 @@ public class Correos extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBuscarCorreoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        Eliminar();
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Guardar los cambios?");
+        if (JOptionPane.OK_OPTION == confirmado) {
+            Eliminar();
+            limpiar();
+        } else {
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
-        Guardar();
-        limpiar();
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Guardar los cambios?");
+        if (JOptionPane.OK_OPTION == confirmado) {
+            Guardar();
+            limpiar();
+        } else {
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
-        Modificar();
-        limpiar();
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Guardar los cambios?");
+        if (JOptionPane.OK_OPTION == confirmado) {
+            Modificar();
+            limpiar();
+        } else {
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
