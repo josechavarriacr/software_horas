@@ -13,7 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import service.ayudaServicio;
+import service.correoServicio;
 import objetos.Ayuda;
+import objetos.Correo;
 import DAO.conectar;
 
 /**
@@ -57,6 +59,25 @@ public class AyudasCorreos extends javax.swing.JDialog {
         }
         return txtIdAyuda.getText();
     }
+    public String obtenerIDCorreo() {
+        Connection conn = null;
+        Statement stm;
+        ResultSet rs;
+        int id;
+        try {
+            conn = conectar.getConnection();
+            stm = conn.createStatement();
+            rs = stm.executeQuery("select max(idCorreo) from correos");
+            while (rs.next()) {
+                id = rs.getInt(1);
+                id = id + 1;
+                txtIdCorreo.setText(String.valueOf(id));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return txtIdCorreo.getText();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,9 +103,9 @@ public class AyudasCorreos extends javax.swing.JDialog {
         txtEstado = new javax.swing.JComboBox();
         btnBuscarEstudiante = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtIdCorreo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtDireecionCorreo = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         btnLimpiar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -145,8 +166,12 @@ public class AyudasCorreos extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Número correo");
 
+        txtIdCorreo.setEditable(false);
+
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Dirección correo");
+
+        txtDireecionCorreo.setEditable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -176,11 +201,11 @@ public class AyudasCorreos extends javax.swing.JDialog {
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDireecionCorreo, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIdEstudiante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                             .addComponent(txtIdAyuda, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                             .addComponent(txtEstado, javax.swing.GroupLayout.Alignment.LEADING, 0, 141, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(txtIdCorreo, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnBuscarAyuda)
@@ -207,11 +232,11 @@ public class AyudasCorreos extends javax.swing.JDialog {
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDireecionCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -324,6 +349,16 @@ public class AyudasCorreos extends javax.swing.JDialog {
         ayudaServicio service = new ayudaServicio();
         Ayuda help = service.insertar(idAyuda, idEstudiante, estado, fecha);
     }
+private void GuardarCorreo() {
+        String idCorreo = txtIdCorreo.getText();
+        String numAyuda = txtIdAyuda.getText();
+        String correo = txtDireecionCorreo .getText();
+        String estado = txtEstado.getSelectedItem().toString();
+        String fecha = txtFecha.getText();
+
+        correoServicio servive = new correoServicio();
+        Correo mail = servive.insertar(idCorreo, numAyuda, correo, estado, fecha);
+    }
 
     private void modificar() {
         String idAyuda = txtIdAyuda.getText();
@@ -337,7 +372,6 @@ public class AyudasCorreos extends javax.swing.JDialog {
 
     private void eliminar() {
         String idAyuda = txtIdAyuda.getText();
-
         ayudaServicio service = new ayudaServicio();
         Ayuda help = service.eliminar(idAyuda);
     }
@@ -350,6 +384,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Guardar los cambios?");
         if (JOptionPane.OK_OPTION == confirmado) {
             guardar();
+            GuardarCorreo();
             limpiar();
         } else {
         }
@@ -386,6 +421,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
 
     private void btnBuscarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEstudianteActionPerformed
         obtenerID();
+        obtenerIDCorreo();
         txtFecha.setText(fechaActual());
         AyudasBusquedaEstudiante est = new AyudasBusquedaEstudiante(null, true);
         est.setLocationRelativeTo(null);
@@ -461,12 +497,12 @@ public class AyudasCorreos extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
+    public static javax.swing.JTextField txtDireecionCorreo;
     public static javax.swing.JComboBox txtEstado;
     public static javax.swing.JTextField txtFecha;
     public static javax.swing.JTextField txtIdAyuda;
+    private javax.swing.JTextField txtIdCorreo;
     public static javax.swing.JTextField txtIdEstudiante;
     // End of variables declaration//GEN-END:variables
 }

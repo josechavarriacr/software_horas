@@ -329,7 +329,9 @@ public class AyudasBusquedaEstudiante extends javax.swing.JDialog {
         int row = jTableEstudiantes.rowAtPoint(evt.getPoint());
 
         String idEstudiante = (jTableEstudiantes.getValueAt(row, 0).toString());
-        Ayudas.txtIdEstudiante.setText(idEstudiante);
+        AyudasCorreos.txtIdEstudiante.setText(idEstudiante);
+        String direccionCorreo =(jTableEstudiantes.getValueAt(row, 3).toString());
+        AyudasCorreos.txtDireecionCorreo.setText(direccionCorreo);
 
         this.setVisible(false);
     }//GEN-LAST:event_jTableEstudiantesMouseClicked

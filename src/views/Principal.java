@@ -212,7 +212,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnAyudasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudasActionPerformed
-       Ayudas ayu = new Ayudas(this,true);
+       AyudasCorreos ayu = new AyudasCorreos(this,true);
        ayu.setLocationRelativeTo(null);
        ayu.setModal(true);
        ayu.setVisible(true);

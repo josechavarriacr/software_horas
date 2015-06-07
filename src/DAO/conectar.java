@@ -119,9 +119,10 @@ public class conectar {
             realizado = false;
         }
         if (realizado) {
-            JOptionPane.showMessageDialog(null, "Ayuda agregada exitosamente");
+           // JOptionPane.showMessageDialog(null, "Ayuda agregada exitosamente");
+            System.out.println("Ayuda agregada exitosamente");
         } else {
-            JOptionPane.showMessageDialog(null, "Error al insertar");
+            JOptionPane.showMessageDialog(null, "Error al insertar Ayuda");
         }
         conexion.close();
     }
