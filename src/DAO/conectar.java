@@ -147,7 +147,8 @@ public class conectar {
             System.out.println("Error");
         }
         if (realizado) {
-            JOptionPane.showMessageDialog(null, "Ayuda modificada exitosamente");
+            //JOptionPane.showMessageDialog(null, "Ayuda modificada exitosamente");
+           System.out.println("Ayuda modificada exitosamente");
         } else {
             JOptionPane.showMessageDialog(null, "Error de modificacion");
         }
@@ -233,7 +234,8 @@ public class conectar {
         statement.setInt(1, numero);
         int actualizados = statement.executeUpdate();
         if (actualizados > 0) {
-            JOptionPane.showMessageDialog(null, "Datos eliminados correctamente: " + actualizados);
+            //JOptionPane.showMessageDialog(null, "Datos eliminados correctamente: " + actualizados);
+            System.out.println("Correo Eliminado Correctamente");
         } else {
             JOptionPane.showMessageDialog(null, "Error al eliminar los datos");
         }

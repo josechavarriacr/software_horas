@@ -52,8 +52,10 @@ public class AyudasBusqueda extends javax.swing.JDialog {
         }
         String sql = "select\n"
                 + "`ayudas`.`idAyuda` AS Código,\n"
-                + "`ayudas`.`idEstudiante` AS Cédula,\n"
+                + "`estudiantes`.`cedula` AS Cédula,\n"
                 + "`estudiantes`.`nombre` AS Nombre,\n"
+                + "`correos`.`idCorreo` AS 'ID correo',\n"
+                + "`estudiantes`.`correo` AS 'Correo', \n"
                 + "`ayudas`.`estado` AS Estado,\n"
                 + "`ayudas`.`fecha` AS Fecha\n"
                 + "from `ayudas`\n"
@@ -61,6 +63,9 @@ public class AyudasBusqueda extends javax.swing.JDialog {
                 + "`estudiantes`\n"
                 + "on\n"
                 + "`ayudas`.`idEstudiante`=`estudiantes`.`cedula`\n"
+                + "INNER JOIN `correos`\n"
+                + "on\n"
+                + "`ayudas`.`idAyuda`=`correos`.`numAyuda`\n"
                 + "where `estudiantes`.`nombre` like ?\n"
                 + "ORDER BY `ayudas`.`estado`";
         try {
@@ -96,9 +101,11 @@ public class AyudasBusqueda extends javax.swing.JDialog {
 
         }
         String sql = "select\n"
-                + "`ayudas`.`idAyuda` AS 'Código',\n"
-                + "`ayudas`.`idEstudiante` AS Cédula,\n"
+                + "`ayudas`.`idAyuda` AS Código,\n"
+                + "`estudiantes`.`cedula` AS Cédula,\n"
                 + "`estudiantes`.`nombre` AS Nombre,\n"
+                + "`correos`.`idCorreo` AS 'ID correo',\n"
+                + "`estudiantes`.`correo` AS 'Correo', \n"
                 + "`ayudas`.`estado` AS Estado,\n"
                 + "`ayudas`.`fecha` AS Fecha\n"
                 + "from `ayudas`\n"
@@ -106,7 +113,10 @@ public class AyudasBusqueda extends javax.swing.JDialog {
                 + "`estudiantes`\n"
                 + "on\n"
                 + "`ayudas`.`idEstudiante`=`estudiantes`.`cedula`\n"
-                + "where `ayudas`.`idEstudiante` like ?\n"
+                + "INNER JOIN `correos`\n"
+                + "on\n"
+                + "`ayudas`.`idAyuda`=`correos`.`numAyuda`\n"
+                + "where `estudiantes`.`cedula` like ?\n"
                 + "ORDER BY `ayudas`.`estado`";
         try {
             pst = conn.prepareStatement(sql);
@@ -140,10 +150,12 @@ public class AyudasBusqueda extends javax.swing.JDialog {
             System.out.println("Error con la cadena String de conexión");
 
         }
-        String sql = "select \n"
-                + "`ayudas`.`idAyuda` AS 'Código',\n"
-                + "`ayudas`.`idEstudiante` AS Cédula,\n"
+        String sql = "select\n"
+                + "`ayudas`.`idAyuda` AS Código,\n"
+                + "`estudiantes`.`cedula` AS Cédula,\n"
                 + "`estudiantes`.`nombre` AS Nombre,\n"
+                + "`correos`.`idCorreo` AS 'ID correo',\n"
+                + "`estudiantes`.`correo` AS 'Correo', \n"
                 + "`ayudas`.`estado` AS Estado,\n"
                 + "`ayudas`.`fecha` AS Fecha\n"
                 + "from `ayudas`\n"
@@ -151,6 +163,9 @@ public class AyudasBusqueda extends javax.swing.JDialog {
                 + "`estudiantes`\n"
                 + "on\n"
                 + "`ayudas`.`idEstudiante`=`estudiantes`.`cedula`\n"
+                + "INNER JOIN `correos`\n"
+                + "on\n"
+                + "`ayudas`.`idAyuda`=`correos`.`numAyuda`\n"
                 + "ORDER BY `ayudas`.`estado`";
         try {
             pst = conn.prepareStatement(sql);
@@ -235,10 +250,10 @@ public class AyudasBusqueda extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(26, 26, 26)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -256,13 +271,13 @@ public class AyudasBusqueda extends javax.swing.JDialog {
         jTableAyudas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTableAyudas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
             }
         ));
         jTableAyudas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -271,10 +286,6 @@ public class AyudasBusqueda extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(jTableAyudas);
-        if (jTableAyudas.getColumnModel().getColumnCount() > 0) {
-            jTableAyudas.getColumnModel().getColumn(3).setHeaderValue("Title 4");
-            jTableAyudas.getColumnModel().getColumn(4).setHeaderValue("Title 5");
-        }
 
         btnSalir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSalir.setText("Salir");
@@ -289,33 +300,34 @@ public class AyudasBusqueda extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79))
+                .addGap(123, 123, 123))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(244, 244, 244)
-                            .addComponent(jLabel50))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(25, 25, 25)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(745, 745, 745)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(392, 392, 392)
+                        .addComponent(jLabel50)))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(45, 45, 45)
                 .addComponent(jLabel50)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -333,22 +345,28 @@ public class AyudasBusqueda extends javax.swing.JDialog {
         int row = jTableAyudas.rowAtPoint(evt.getPoint());
 
         String idAyuda = (jTableAyudas.getValueAt(row, 0).toString());
-        Ayudas.txtIdAyuda.setText(idAyuda);
-        
+        AyudasCorreos.txtIdAyuda.setText(idAyuda);
+
         String idEstudiante = (jTableAyudas.getValueAt(row, 1).toString());
-        Ayudas.txtIdEstudiante.setText(idEstudiante);
+        AyudasCorreos.txtIdEstudiante.setText(idEstudiante);
 
-        String estado = (jTableAyudas.getValueAt(row, 2).toString());
-        Ayudas.txtEstado.setSelectedItem(estado);
+        String IDcorreo = (jTableAyudas.getValueAt(row, 3).toString());
+        AyudasCorreos.txtIDcorreo.setText(IDcorreo);
 
-        String fecha = (jTableAyudas.getValueAt(row, 4).toString());
-        Ayudas.txtFecha.setText(fecha);
-       
+        String direccionCorreo = (jTableAyudas.getValueAt(row, 4).toString());
+        AyudasCorreos.txtDireecionCorreo.setText(direccionCorreo);
+
+        String estado = (jTableAyudas.getValueAt(row, 5).toString());
+        AyudasCorreos.txtEstado.setSelectedItem(estado);
+
+        String fecha = (jTableAyudas.getValueAt(row, 6).toString());
+        AyudasCorreos.txtFecha.setText(fecha);
+
         this.setVisible(false);
     }//GEN-LAST:event_jTableAyudasMouseClicked
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-       this.setVisible(false);
+        this.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
@@ -364,13 +382,13 @@ public class AyudasBusqueda extends javax.swing.JDialog {
 
     private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
         /*char c = evt.getKeyChar();
-        boolean space = evt.getKeyCode() == KeyEvent.VK_BACK_SPACE;
-        boolean backSpace = evt.getKeyCode() == KeyEvent.VK_SPACE;
-        if (Character.isLetter(c) || space || backSpace) {
-            getToolkit().beep();
-            evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo numeros aceptados!");
-        }*/
+         boolean space = evt.getKeyCode() == KeyEvent.VK_BACK_SPACE;
+         boolean backSpace = evt.getKeyCode() == KeyEvent.VK_SPACE;
+         if (Character.isLetter(c) || space || backSpace) {
+         getToolkit().beep();
+         evt.consume();
+         JOptionPane.showMessageDialog(null, "Solo numeros aceptados!");
+         }*/
     }//GEN-LAST:event_txtCedulaKeyTyped
 
     private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased

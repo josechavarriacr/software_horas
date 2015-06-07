@@ -115,11 +115,6 @@ public class Correos extends javax.swing.JDialog {
 
     void Eliminar() {
         String idCorreo = txtIdCorreo.getText();
-        String numAyuda = txtNumAyuda.getText();
-        String correo = txtCorreo.getText();
-        String estado = txtEstado.getSelectedItem().toString();
-        String fecha = txtFecha.getText();
-
         correoServicio service = new correoServicio();
         Correo mail = service.eliminar(idCorreo);
     }

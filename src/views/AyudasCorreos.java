@@ -39,7 +39,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/YYYY");
         return formatoFecha.format(fecha);
     }
-    
+
     public String obtenerID() {
         Connection conn = null;
         Statement stm;
@@ -59,6 +59,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
         }
         return txtIdAyuda.getText();
     }
+
     public String obtenerIDCorreo() {
         Connection conn = null;
         Statement stm;
@@ -71,13 +72,14 @@ public class AyudasCorreos extends javax.swing.JDialog {
             while (rs.next()) {
                 id = rs.getInt(1);
                 id = id + 1;
-                txtIdCorreo.setText(String.valueOf(id));
+                txtIDcorreo.setText(String.valueOf(id));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return txtIdCorreo.getText();
+        return txtIDcorreo.getText();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -103,7 +105,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
         txtEstado = new javax.swing.JComboBox();
         btnBuscarEstudiante = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        txtIdCorreo = new javax.swing.JTextField();
+        txtIDcorreo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtDireecionCorreo = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -166,7 +168,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Número correo");
 
-        txtIdCorreo.setEditable(false);
+        txtIDcorreo.setEditable(false);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Dirección correo");
@@ -205,7 +207,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
                             .addComponent(txtIdEstudiante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                             .addComponent(txtIdAyuda, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                             .addComponent(txtEstado, javax.swing.GroupLayout.Alignment.LEADING, 0, 141, Short.MAX_VALUE)
-                            .addComponent(txtIdCorreo, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(txtIDcorreo, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnBuscarAyuda)
@@ -232,7 +234,7 @@ public class AyudasCorreos extends javax.swing.JDialog {
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtIdCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIDcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -338,9 +340,39 @@ public class AyudasCorreos extends javax.swing.JDialog {
         txtIdAyuda.setText(null);
         txtIdEstudiante.setText(null);
         txtFecha.setText(null);
+        txtDireecionCorreo.setText(null);
+        txtIDcorreo.setText(null);
     }
 
-    private void guardar() {
+    private void guardarCorreo() {
+        String idCorreo = txtIDcorreo.getText();
+        String numAyuda = txtIdAyuda.getText();
+        String correo = txtDireecionCorreo.getText();
+        String estado = txtEstado.getSelectedItem().toString();
+        String fecha = txtFecha.getText();
+
+        correoServicio servive = new correoServicio();
+        Correo mail = servive.insertar(idCorreo, numAyuda, correo, estado, fecha);
+    }
+
+    private void modificarCorreo() {
+        String idCorreo = txtIDcorreo.getText();
+        String numAyuda = txtIdAyuda.getText();
+        String correo = txtDireecionCorreo.getText();
+        String estado = txtEstado.getSelectedItem().toString();
+        String fecha = txtFecha.getText();
+
+        correoServicio service = new correoServicio();
+        Correo mail = service.modificar(idCorreo, numAyuda, correo, estado, fecha);
+    }
+
+    private void eliminarCorreo() {
+        String idCorreo = txtIDcorreo.getText();
+        correoServicio service = new correoServicio();
+        Correo mail = service.eliminar(idCorreo);
+    }
+
+    private void guardarAyuda() {
         String idAyuda = txtIdAyuda.getText();
         String idEstudiante = txtIdEstudiante.getText();
         String estado = txtEstado.getSelectedItem().toString();
@@ -349,18 +381,8 @@ public class AyudasCorreos extends javax.swing.JDialog {
         ayudaServicio service = new ayudaServicio();
         Ayuda help = service.insertar(idAyuda, idEstudiante, estado, fecha);
     }
-private void GuardarCorreo() {
-        String idCorreo = txtIdCorreo.getText();
-        String numAyuda = txtIdAyuda.getText();
-        String correo = txtDireecionCorreo .getText();
-        String estado = txtEstado.getSelectedItem().toString();
-        String fecha = txtFecha.getText();
 
-        correoServicio servive = new correoServicio();
-        Correo mail = servive.insertar(idCorreo, numAyuda, correo, estado, fecha);
-    }
-
-    private void modificar() {
+    private void modificarAyuda() {
         String idAyuda = txtIdAyuda.getText();
         String idEstudiante = txtIdEstudiante.getText();
         String estado = txtEstado.getSelectedItem().toString();
@@ -370,7 +392,7 @@ private void GuardarCorreo() {
         Ayuda help = service.actualizar(idAyuda, idEstudiante, estado, fecha);
     }
 
-    private void eliminar() {
+    private void eliminarAyuda() {
         String idAyuda = txtIdAyuda.getText();
         ayudaServicio service = new ayudaServicio();
         Ayuda help = service.eliminar(idAyuda);
@@ -383,8 +405,8 @@ private void GuardarCorreo() {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Guardar los cambios?");
         if (JOptionPane.OK_OPTION == confirmado) {
-            guardar();
-            GuardarCorreo();
+            guardarAyuda();
+            guardarCorreo();
             limpiar();
         } else {
         }
@@ -393,7 +415,8 @@ private void GuardarCorreo() {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Guardar los cambios?");
         if (JOptionPane.OK_OPTION == confirmado) {
-            modificar();
+            modificarAyuda();
+            modificarCorreo();
             limpiar();
         } else {
         }
@@ -401,19 +424,20 @@ private void GuardarCorreo() {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Guardar los cambios?");
-        if (JOptionPane.OK_OPTION == confirmado) {
-            eliminar();
+        if (JOptionPane.OK_OPTION == confirmado) {            
+            eliminarCorreo();            
+            eliminarAyuda();
             limpiar();
         } else {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnBuscarAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAyudaActionPerformed
-        AyudasBusqueda find = new AyudasBusqueda(null,true);
+        AyudasBusqueda find = new AyudasBusqueda(null, true);
         find.setLocationRelativeTo(null);
         find.setModal(true);
         find.setVisible(true);
@@ -501,8 +525,8 @@ private void GuardarCorreo() {
     public static javax.swing.JTextField txtDireecionCorreo;
     public static javax.swing.JComboBox txtEstado;
     public static javax.swing.JTextField txtFecha;
+    public static javax.swing.JTextField txtIDcorreo;
     public static javax.swing.JTextField txtIdAyuda;
-    private javax.swing.JTextField txtIdCorreo;
     public static javax.swing.JTextField txtIdEstudiante;
     // End of variables declaration//GEN-END:variables
 }
