@@ -27,6 +27,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.swing.JOptionPane;
 import service.correoServicio;
 import objetos.Correo;
@@ -39,7 +42,7 @@ import static views.Ayudas.txtIdAyuda;
 public class Correos extends javax.swing.JDialog {
     String usuario;
     String password;
-    String mensaje, asunto;
+    String mensaje, asunto, firma;
 
     /**
      * Creates new form Estudiantes
@@ -121,38 +124,20 @@ public class Correos extends javax.swing.JDialog {
         Correo mail = service.eliminar(idCorreo);
     }
     public boolean enviar_correo(){
-        /*Connection conn = null;
-        ResultSet rs = null;
-        PreparedStatement pst = null;
-        try {
-            System.out.println("Cargando driver");
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (Exception e) {
-            System.out.print(e.getMessage());
-        }
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ProyectoBD", "root", "");
-            System.out.println("Conectado a la bd");
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBuscarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        String sql = "select contrasena from administradores where cedula like ?";
-        try{
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, txtUsuario.getText() + "%");
-            rs = pst.executeQuery();
-            rs.next();
-            recuperar = rs.getString(1);
-        }catch(SQLException ex){
-            System.out.println("Error: " + ex);
-        }
-        */
+       
         asunto = "Informe Ayuda Socioeconomica";
         usuario = "sistcasefeuna@gmail.com";
         password = "casq1w2e3r4";
-        mensaje=txtArea.getText();
+        mensaje = txtArea.getText();
+        firma = "___________________________________\n"
+                + "Federación de Estudiantes\n"
+                + "Universidad Nacional, Costa Rica.\n"
+                + "(506) 2277-3827	\n"
+                + "http://www.feuna.una.ac.cr\n"
+                + "asuntosuniversitariosfeuna@gmail.com\n"
+                + "\n"
+                + "“Hay que soñar el porvenir, desearlo, crearlo. Hay que sacarlo del alma de las actuales generaciones con todo el oro que allí acumuló el pasado, con toda la vehemente ansiedad de creación de las grandes obras de hombres y pueblos”. \n"
+                + "Omar Dengo Guerrero \"Maestro de Maestros y educador de un pueblo\". ";
         try {
             Properties pro = new Properties();
             pro.put("mail.smtp.host", "smtp.gmail.com");
@@ -163,9 +148,16 @@ public class Correos extends javax.swing.JDialog {
             
             Session s = Session.getDefaultInstance(pro,null);
             BodyPart texto = new MimeBodyPart();
-            texto.setText("Su contraseña es: "+mensaje);
+            texto.setText(mensaje+firma);
+            /*
+            BodyPart adjunto = new MimeBodyPart();
+            adjunto.setDataHandler(new DataHandler(new FileDataSource("..\\images\\logo.png")));
+            adjunto.setFileName("logo.png");
+            */
             MimeMultipart m = new MimeMultipart();
             m.addBodyPart(texto);
+            //m.addBodyPart(adjunto);
+            
             MimeMessage mensaje = new MimeMessage(s);
             mensaje.setFrom(new InternetAddress("sistcasefeuna@gmail.com"));
             mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(txtCorreo.getText()));
@@ -512,7 +504,7 @@ public class Correos extends javax.swing.JDialog {
         Saludo = "Reciba un coordinal saludo departe de la Federación de Estudiantes de la Universiad Nacional,";
         String Enviada;
         Enviada = Saludo + " le informamos que su solicitud de ayuda socioeconomica ha sido enviada a las oficinas de Vida Estudiantil,"
-                + " mantenganse en contacto para recibir la respuesta que nos emita dicha entidad";
+                + " mantenganse en contacto para recibir la respuesta que nos emita dicha entidad\n\n";
         String Rechazada;
         cadena = txtEstado.getSelectedItem().toString();
         String[] verificar = {"Ayuda Enviada", "Ayuda Aprobada", "Ayuda Rechazada"};
