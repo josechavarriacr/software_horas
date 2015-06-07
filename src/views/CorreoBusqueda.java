@@ -51,10 +51,8 @@ public class CorreoBusqueda extends javax.swing.JDialog {
 
         }
         String sql = "SELECT \n"
-                + "`correos`.`idCorreo` AS 'ID correo',\n"
                 + "`estudiantes`.`nombre` AS 'Nombre',\n"
                 + "`estudiantes`.`cedula` 'Cédula',\n"
-                + "`correos`.`numAyuda` AS 'Cod ayuda',\n"
                 + "`correos`.`correo` AS 'Correo',\n"
                 + "`correos`.`estado` AS 'Estado correo',\n"
                 + "`correos`.`fecha` AS 'Fecha'\n"
@@ -63,7 +61,8 @@ public class CorreoBusqueda extends javax.swing.JDialog {
                 + "on\n"
                 + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`\n"
                 + "INNER JOIN `correos`\n"
-                + "on `ayudas`.`idAyuda`=`correos`.`numAyuda`";
+                + "on `ayudas`.`idAyuda`=`correos`.`numAyuda`\n"
+                + "where `ayudas`.`estado`!='Pendiente'";
         try {
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
@@ -97,10 +96,8 @@ public class CorreoBusqueda extends javax.swing.JDialog {
 
         }
         String sql = "SELECT \n"
-                + "`correos`.`idCorreo` AS 'ID correo',\n"
                 + "`estudiantes`.`nombre` AS 'Nombre',\n"
                 + "`estudiantes`.`cedula` 'Cédula',\n"
-                + "`correos`.`numAyuda` AS 'Cod ayuda',\n"
                 + "`correos`.`correo` AS 'Correo',\n"
                 + "`correos`.`estado` AS 'Estado correo',\n"
                 + "`correos`.`fecha` AS 'Fecha'\n"
@@ -144,10 +141,8 @@ public class CorreoBusqueda extends javax.swing.JDialog {
 
         }
          String sql = "SELECT \n"
-                 + "`correos`.`idCorreo` AS 'ID correo',\n"
                  + "`estudiantes`.`nombre` AS 'Nombre',\n"
                  + "`estudiantes`.`cedula` 'Cédula',\n"
-                 + "`correos`.`numAyuda` AS 'Cod ayuda',\n"
                  + "`correos`.`correo` AS 'Correo',\n"
                  + "`correos`.`estado` AS 'Estado correo',\n"
                  + "`correos`.`fecha` AS 'Fecha'\n"
@@ -261,13 +256,13 @@ public class CorreoBusqueda extends javax.swing.JDialog {
         jTableCorreo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTableCorreo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
         jTableCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -293,15 +288,13 @@ public class CorreoBusqueda extends javax.swing.JDialog {
                 .addComponent(jLabel50)
                 .addGap(355, 355, 355))
             .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(18, 18, 18)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(111, 111, 111)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 803, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -311,11 +304,11 @@ public class CorreoBusqueda extends javax.swing.JDialog {
                 .addComponent(jLabel50)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -332,19 +325,16 @@ public class CorreoBusqueda extends javax.swing.JDialog {
     private void jTableCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCorreoMouseClicked
         int row = jTableCorreo.rowAtPoint(evt.getPoint());
 
-        String idCorreo = (jTableCorreo.getValueAt(row, 0).toString());
-        Correos.txtIdCorreo.setText(idCorreo);
-        
-        String numAyuda =(jTableCorreo.getValueAt(row, 3).toString());
-        Correos.txtNumAyuda.setText(numAyuda);
-        
-        String correo =(jTableCorreo.getValueAt(row, 4).toString());
+        String nombre = (jTableCorreo.getValueAt(row, 0).toString());
+        Correos.txtNombre.setText(nombre);
+              
+        String correo =(jTableCorreo.getValueAt(row, 2).toString());
         Correos.txtCorreo.setText(correo);
 
-        String estado = (jTableCorreo.getValueAt(row, 5).toString());
+        String estado = (jTableCorreo.getValueAt(row, 3).toString());
         Correos.txtEstado.setSelectedItem(estado);
 
-        String fecha = (jTableCorreo.getValueAt(row, 6).toString());
+        String fecha = (jTableCorreo.getValueAt(row, 4).toString());
         Correos.txtFecha.setText(fecha);
        
         this.setVisible(false);
