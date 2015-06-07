@@ -8,11 +8,25 @@ package views;
 import DAO.conectar;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.JOptionPane;
 import service.correoServicio;
 import objetos.Correo;
@@ -23,6 +37,9 @@ import static views.Ayudas.txtIdAyuda;
  * @author Rafal
  */
 public class Correos extends javax.swing.JDialog {
+    String usuario;
+    String password;
+    String mensaje, asunto;
 
     /**
      * Creates new form Estudiantes
@@ -103,6 +120,70 @@ public class Correos extends javax.swing.JDialog {
         correoServicio service = new correoServicio();
         Correo mail = service.eliminar(idCorreo);
     }
+    public boolean enviar_correo(){
+        /*Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+        try {
+            System.out.println("Cargando driver");
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ProyectoBD", "root", "");
+            System.out.println("Conectado a la bd");
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBuscarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String sql = "select contrasena from administradores where cedula like ?";
+        try{
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtUsuario.getText() + "%");
+            rs = pst.executeQuery();
+            rs.next();
+            recuperar = rs.getString(1);
+        }catch(SQLException ex){
+            System.out.println("Error: " + ex);
+        }
+        */
+        asunto = "Informe Ayuda Socioeconomica";
+        usuario = "sistcasefeuna@gmail.com";
+        password = "casq1w2e3r4";
+        mensaje=txtArea.getText();
+        try {
+            Properties pro = new Properties();
+            pro.put("mail.smtp.host", "smtp.gmail.com");
+            pro.setProperty("mail.smtp.starttls.enable", "true");
+            pro.setProperty("mail.smtp.port", "587");
+            pro.setProperty("mail.smtp.user", "sistcasefeuna@gmail.com");
+            pro.setProperty("mail.smtp.auth", "true");
+            
+            Session s = Session.getDefaultInstance(pro,null);
+            BodyPart texto = new MimeBodyPart();
+            texto.setText("Su contraseña es: "+mensaje);
+            MimeMultipart m = new MimeMultipart();
+            m.addBodyPart(texto);
+            MimeMessage mensaje = new MimeMessage(s);
+            mensaje.setFrom(new InternetAddress("sistcasefeuna@gmail.com"));
+            mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(txtCorreo.getText()));
+            mensaje.setSubject((asunto));
+            mensaje.setContent(m);
+            
+            Transport t = s.getTransport("smtp");
+            t.connect(usuario, password);
+            t.sendMessage(mensaje, mensaje.getAllRecipients());
+            t.close();
+            return true;
+            
+        } catch (MessagingException e) {
+            System.out.println("Error: "+e);
+             return false;
+        }
+       
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -139,6 +220,7 @@ public class Correos extends javax.swing.JDialog {
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnEnviar = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -338,6 +420,14 @@ public class Correos extends javax.swing.JDialog {
             }
         });
 
+        btnEnviar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnEnviar.setText("Enviar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -345,32 +435,43 @@ public class Correos extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(204, 204, 204)
-                        .addComponent(jLabel8))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(74, 74, 74)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEnviar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(204, 204, 204)
+                                .addComponent(jLabel8))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(25, 25, 25))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEnviar)
+                        .addGap(108, 108, 108)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -475,6 +576,19 @@ public class Correos extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea Enviar el Correo?");
+        if (JOptionPane.OK_OPTION == confirmado) {
+            if (enviar_correo()) {
+                getToolkit().beep();
+                JOptionPane.showMessageDialog(null, "El correo ha sido enviado a: " + txtCorreo.getText());
+            } else {
+                JOptionPane.showMessageDialog(null, "Correo no enviado");
+            }
+        } else {
+        }
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -529,6 +643,7 @@ public class Correos extends javax.swing.JDialog {
     private javax.swing.JButton btnBuscarCorreo;
     private javax.swing.JButton btnBuscarEmail;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;

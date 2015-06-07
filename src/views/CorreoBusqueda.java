@@ -50,14 +50,14 @@ public class CorreoBusqueda extends javax.swing.JDialog {
             System.out.println("Error con la cadena String de conexión");
 
         }
-        String sql = "SELECT\n"
-                + "`correos`.`idCorreo`,\n"
-                + "`estudiantes`.`nombre`,\n"
-                + "`estudiantes`.`cedula`,\n"
-                + "`correos`.`numAyuda`,\n"
-                + "`correos`.`correo`,\n"
-                + "`correos`.`estado`,\n"
-                + "`correos`.`fecha`\n"
+        String sql = "SELECT \n"
+                + "`correos`.`idCorreo` AS 'ID correo',\n"
+                + "`estudiantes`.`nombre` AS 'Nombre',\n"
+                + "`estudiantes`.`cedula` 'Cédula',\n"
+                + "`correos`.`numAyuda` AS 'Cod ayuda',\n"
+                + "`correos`.`correo` AS 'Correo',\n"
+                + "`correos`.`estado` AS 'Estado correo',\n"
+                + "`correos`.`fecha` AS 'Fecha'\n"
                 + "from `estudiantes`\n"
                 + "INNER JOIN `ayudas`\n"
                 + "on\n"
@@ -96,14 +96,14 @@ public class CorreoBusqueda extends javax.swing.JDialog {
             System.out.println("Error con la cadena String de conexión");
 
         }
-        String sql = "SELECT\n"
-                + "`correos`.`idCorreo`,\n"
-                + "`estudiantes`.`nombre`,\n"
-                + "`estudiantes`.`cedula`,\n"
-                + "`correos`.`numAyuda`,\n"
-                + "`correos`.`correo`,\n"
-                + "`correos`.`estado`,\n"
-                + "`correos`.`fecha`\n"
+        String sql = "SELECT \n"
+                + "`correos`.`idCorreo` AS 'ID correo',\n"
+                + "`estudiantes`.`nombre` AS 'Nombre',\n"
+                + "`estudiantes`.`cedula` 'Cédula',\n"
+                + "`correos`.`numAyuda` AS 'Cod ayuda',\n"
+                + "`correos`.`correo` AS 'Correo',\n"
+                + "`correos`.`estado` AS 'Estado correo',\n"
+                + "`correos`.`fecha` AS 'Fecha'\n"
                 + "from `estudiantes`\n"
                 + "INNER JOIN `ayudas`\n"
                 + "on\n"
@@ -143,22 +143,22 @@ public class CorreoBusqueda extends javax.swing.JDialog {
             System.out.println("Error con la cadena String de conexión");
 
         }
-        String sql = "SELECT\n"
-                + "`correos`.`idCorreo`,\n"
-                + "`estudiantes`.`nombre`,\n"
-                + "`estudiantes`.`cedula`,\n"
-                + "`correos`.`numAyuda`,\n"
-                + "`correos`.`correo`,\n"
-                + "`correos`.`estado`,\n"
-                + "`correos`.`fecha`\n"
-                + "from `estudiantes`\n"
-                + "INNER JOIN `ayudas`\n"
-                + "on\n"
-                + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`\n"
-                + "INNER JOIN `correos`\n"
-                + "on `ayudas`.`idAyuda`=`correos`.`numAyuda` where `estudiantes`.`nombre` like ?";
-        try {
-            pst = conn.prepareStatement(sql);
+         String sql = "SELECT \n"
+                 + "`correos`.`idCorreo` AS 'ID correo',\n"
+                 + "`estudiantes`.`nombre` AS 'Nombre',\n"
+                 + "`estudiantes`.`cedula` 'Cédula',\n"
+                 + "`correos`.`numAyuda` AS 'Cod ayuda',\n"
+                 + "`correos`.`correo` AS 'Correo',\n"
+                 + "`correos`.`estado` AS 'Estado correo',\n"
+                 + "`correos`.`fecha` AS 'Fecha'\n"
+                 + "from `estudiantes`\n"
+                 + "INNER JOIN `ayudas`\n"
+                 + "on\n"
+                 + "`estudiantes`.`cedula`=`ayudas`.`idEstudiante`\n"
+                 + "INNER JOIN `correos`\n"
+                 + "on `ayudas`.`idAyuda`=`correos`.`numAyuda` where `estudiantes`.`nombre` like ?";
+         try {
+             pst = conn.prepareStatement(sql);
             pst.setString(1, txtNombre.getText()+"%");
             rs = pst.executeQuery();
             jTableCorreo.setModel(DbUtils.resultSetToTableModel(rs));
