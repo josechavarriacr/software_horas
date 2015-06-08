@@ -33,7 +33,7 @@ import javax.activation.FileDataSource;
 import javax.swing.JOptionPane;
 import service.correoServicio;
 import objetos.Correo;
-import static views.Ayudas.txtIdAyuda;
+
 
 /**
  *
@@ -290,6 +290,7 @@ public class Correos extends javax.swing.JDialog {
         });
 
         btnEnviar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/envelope_open.png"))); // NOI18N
         btnEnviar.setText("Enviar");
         btnEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -317,8 +318,8 @@ public class Correos extends javax.swing.JDialog {
                         .addComponent(jLabel8))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(118, 118, 118)
+                        .addComponent(btnEnviar)
+                        .addGap(112, 112, 112)
                         .addComponent(btnLimpiar)
                         .addGap(120, 120, 120)
                         .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
